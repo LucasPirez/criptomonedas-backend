@@ -1,0 +1,10 @@
+POST http://localhost:3001/alerts/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZTE1NTAxZjA0NmI4ZGYwOTUxNjcwZCIsInVzZXJuYW1lIjoiZGFsZTMwIiwiaWF0IjoxNjc1NzgwMzQwfQ.D1K5T7-DcBkl_SpfYIfDbWHA8Cbwd2UnqUtdQmrNMFo
+
+{
+  "crypto": "ethereum",
+  "min": 300,
+  "max": 300,
+  "time": "20/04/1998"
+}
