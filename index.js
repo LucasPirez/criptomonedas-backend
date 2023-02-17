@@ -56,7 +56,8 @@ const error_handlers = {
     response.status(409).json({
       error: error.message,
     }),
-  defaultError: (response) => response.status(500).end(),
+  defaultError: (response) =>
+    response.status(500).json({ error: "default Error" }),
 };
 
 app.use((error, request, response, next) => {

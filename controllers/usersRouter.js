@@ -3,9 +3,9 @@ const User = require("../models/UserModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-router.get("/login");
+// router.get("/login");
 
-router.post("/login", async (req, res, next) => {
+router.post("/signUp", async (req, res, next) => {
   const { email, completName, userAlias, password } = req.body;
 
   console.log(req.body);
@@ -14,53 +14,50 @@ router.post("/login", async (req, res, next) => {
       error: 'required "content" field is missing',
     });
   }
+  try {
+    const passwordHash = await bcrypt.hash(password, 10);
 
-  const passwordHash = await bcrypt.hash(password, 10);
-
-  const newUser = new User({
-    UserNameComplete: completName,
-    userAlias: userAlias,
-    email: email,
-    DateCreate: new Date(),
-    password: passwordHash,
-  });
-
-  newUser
-    .save()
-    .then((data) => {
-      res.json(data);
-    })
-    .catch((err) => {
-      next(err);
+    const newUser = new User({
+      UserNameComplete: completName,
+      userAlias: userAlias,
+      email: email,
+      DateCreate: new Date(),
+      password: passwordHash,
     });
-});
 
-router.post("/singup", async (req, res, next) => {
-  const { userAlias, password } = req.body;
-
-  const user = await User.findOne({ userAlias });
-  const passworCorrect =
-    user === null ? false : await bcrypt.compare(password, user.password);
-
-  if (!(user && passworCorrect)) {
-    res.status(401).json({
-      error: "invalid user o password",
-    });
+    const responseNewUser = await newUser.save();
+    return res.json(responseNewUser);
+  } catch (error) {
+    next(error);
   }
-
-  const userForToken = {
-    id: user._id,
-    username: user.userAlias,
-  };
-
-  const token = jwt.sign(userForToken, process.env.JWT_WORD, {
-    expiresIn: 60 * 60 * 24 * 7,
-  });
-
-  return res.send({
-    email: user.email,
-    token,
-  });
 });
+
+// router.post("/singup", async (req, res, next) => {
+//   const { userAlias, password } = req.body;
+
+//   const user = await User.findOne({ userAlias });
+//   const passworCorrect =
+//     user === null ? false : await bcrypt.compare(password, user.password);
+
+//   if (!(user && passworCorrect)) {
+//     res.status(401).json({
+//       error: "invalid user o password",
+//     });
+//   }
+
+//   const userForToken = {
+//     id: user._id,
+//     username: user.userAlias,
+//   };
+
+//   const token = jwt.sign(userForToken, process.env.JWT_WORD, {
+//     expiresIn: 60 * 60 * 24 * 7,
+//   });
+
+//   return res.send({
+//     email: user.email,
+//     token,
+//   });
+// });
 
 module.exports = router;
