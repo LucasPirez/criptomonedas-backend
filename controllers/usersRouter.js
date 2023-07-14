@@ -1,63 +1,64 @@
-const router = require("express").Router();
-const User = require("../models/UserModel");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const router = require('express').Router()
+const User = require('../models/UserModel')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 // router.get("/login");
 
-router.post("/signUp", async (req, res, next) => {
-  const { email, completName, userAlias, password } = req.body;
+router.post('/signUp', async (req, res, next) => {
+  const { email, completName, userAlias, password } = req.body
 
-  console.log(req.body);
+  console.log(req.body)
   if (!req.body) {
     return res.status(400).json({
-      error: 'required "content" field is missing',
-    });
+      error: 'required "content" field is missing'
+    })
   }
   try {
-    const passwordHash = await bcrypt.hash(password, 10);
+    const passwordHash = await bcrypt.hash(password, 10)
 
     const newUser = new User({
       UserNameComplete: completName,
       userAlias: userAlias,
       email: email,
       DateCreate: new Date(),
-      password: passwordHash,
-    });
+      password: passwordHash
+    })
 
-    const responseNewUser = await newUser.save();
-    return res.json(responseNewUser);
+    const responseNewUser = await newUser.save()
+    return res.json(responseNewUser)
   } catch (error) {
-    next(error);
+    next(error)
   }
-});
+})
 
-// router.post("/singup", async (req, res, next) => {
-//   const { userAlias, password } = req.body;
+router.post('/singIn', async (req, res, next) => {
+  const { userAlias, password } = req.body
 
-//   const user = await User.findOne({ userAlias });
-//   const passworCorrect =
-//     user === null ? false : await bcrypt.compare(password, user.password);
+  const user = await User.findOne({ userAlias })
 
-//   if (!(user && passworCorrect)) {
-//     res.status(401).json({
-//       error: "invalid user o password",
-//     });
-//   }
+  const passworCorrect =
+    user === null ? false : await bcrypt.compare(password, user.password)
 
-//   const userForToken = {
-//     id: user._id,
-//     username: user.userAlias,
-//   };
+  if (!(user && passworCorrect)) {
+    res.status(401).json({
+      error: 'invalid user o password'
+    })
+  }
 
-//   const token = jwt.sign(userForToken, process.env.JWT_WORD, {
-//     expiresIn: 60 * 60 * 24 * 7,
-//   });
+  const userForToken = {
+    id: user._id,
+    username: user.userAlias
+  }
 
-//   return res.send({
-//     email: user.email,
-//     token,
-//   });
-// });
+  const token = jwt.sign(userForToken, process.env.JWT_WORD, {
+    expiresIn: 60 * 60 * 24 * 7
+  })
 
-module.exports = router;
+  return res.send({
+    email: user.email,
+    token
+  })
+})
+
+module.exports = router

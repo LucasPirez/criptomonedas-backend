@@ -1,9 +1,9 @@
-POST http://localhost:3001/users/login 
+POST http://localhost:3001/users/signUp
 Content-Type: application/json
 
 {
      "UserNameComplete": "person",
-    "userAlias": "dale30",
-    "email": "lucso@hoc",
-    "password": "343454"
+    "userAlias": "julio2",
+    "email": "julio@hoce",
+    "password": "343"
 }

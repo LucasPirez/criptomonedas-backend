@@ -1,7 +1,7 @@
-POST http://localhost:3001/users/singup
+POST http://localhost:3001/users/singIn
 Content-Type: application/json
 
 {
-    "userAlias":"dale30",
-    "password":"343454"
+    "userAlias":"julio2",
+    "password":"343"
 }

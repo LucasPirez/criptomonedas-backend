@@ -1,10 +1,10 @@
-POST http://localhost:3001/alerts/create
+DELETE http://localhost:3001/alerts/delete
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZTE1NTAxZjA0NmI4ZGYwOTUxNjcwZCIsInVzZXJuYW1lIjoiZGFsZTMwIiwiaWF0IjoxNjc1NzgwMzQwfQ.D1K5T7-DcBkl_SpfYIfDbWHA8Cbwd2UnqUtdQmrNMFo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YjA1NGY0NzgxMGZhN2Y0YTFjOGQyZSIsInVzZXJuYW1lIjoianVsaW8yIiwiaWF0IjoxNjg5Mjc3Njk5LCJleHAiOjE2ODk4ODI0OTl9.30oesH3g8gsj-LKsQQ0YlOeISTcEs6TJDkSvfvogMLQ
 
 {
-  "crypto": "ethereum",
-  "min": 300,
-  "max": 300,
-  "time": "20/04/1998"
+  "crypto": "dau",
+  "min": 7001,
+  "max": 30,
+  "time": "1998/04/23"
 }
