@@ -3,6 +3,16 @@ const router = require('express').Router()
 const userExtractor = require('../middleware/userExtractor')
 router.get('/alerts')
 
+router.get('/', (req, res) => {
+  Alert.find({})
+    .then((data) => {
+      res.json(data[0].alerts)
+    })
+    .catch((e) => {
+      console.log(e)
+    })
+})
+
 router.post('/create', userExtractor, async (req, res, next) => {
   const { crypto, min, max, time } = req.body
   const { userId } = req
@@ -81,16 +91,6 @@ router.delete('/delete', userExtractor, async (req, res, next) => {
   } catch (error) {
     next(error)
   }
-})
-
-router.get('/', (req, res) => {
-  Alert.find({})
-    .then((data) => {
-      res.json(data[0].alerts)
-    })
-    .catch((e) => {
-      console.log(e)
-    })
 })
 
 module.exports = router
