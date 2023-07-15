@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
   const decodedToken = jwt.verify(token, process.env.JWT_WORD)
 
   if (!token || !decodedToken.id) {
-    return res.status(404).json({ error: 'token is missing or invalid' })
+    return res.status(401).json({ error: 'token is missing or invalid' })
   }
 
   const { id: userId } = decodedToken

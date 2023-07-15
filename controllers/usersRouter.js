@@ -8,7 +8,6 @@ const jwt = require('jsonwebtoken')
 router.post('/signUp', async (req, res, next) => {
   const { email, completName, userAlias, password } = req.body
 
-  console.log(req.body)
   if (!req.body) {
     return res.status(400).json({
       error: 'required "content" field is missing'
@@ -28,6 +27,7 @@ router.post('/signUp', async (req, res, next) => {
     const responseNewUser = await newUser.save()
     return res.json(responseNewUser)
   } catch (error) {
+    console.log('error user', error)
     next(error)
   }
 })
@@ -35,30 +35,34 @@ router.post('/signUp', async (req, res, next) => {
 router.post('/singIn', async (req, res, next) => {
   const { userAlias, password } = req.body
 
-  const user = await User.findOne({ userAlias })
+  try {
+    const user = await User.findOne({ userAlias })
 
-  const passworCorrect =
-    user === null ? false : await bcrypt.compare(password, user.password)
+    const passworCorrect =
+      user === null ? false : await bcrypt.compare(password, user.password)
 
-  if (!(user && passworCorrect)) {
-    res.status(401).json({
-      error: 'invalid user o password'
+    if (!(user && passworCorrect)) {
+      res.status(401).json({
+        error: 'invalid user o password'
+      })
+    }
+
+    const userForToken = {
+      id: user._id,
+      username: user.userAlias
+    }
+
+    const token = jwt.sign(userForToken, process.env.JWT_WORD, {
+      expiresIn: 60 * 60 * 24 * 7
     })
+
+    return res.send({
+      email: user.email,
+      token
+    })
+  } catch (error) {
+    next(error)
   }
-
-  const userForToken = {
-    id: user._id,
-    username: user.userAlias
-  }
-
-  const token = jwt.sign(userForToken, process.env.JWT_WORD, {
-    expiresIn: 60 * 60 * 24 * 7
-  })
-
-  return res.send({
-    email: user.email,
-    token
-  })
 })
 
 module.exports = router
