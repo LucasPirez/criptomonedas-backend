@@ -1,12 +1,12 @@
 import express, { Request, Response } from 'express'
+import usersRouter from './controllers/usersRouter'
+import alertsRouter from './controllers/alertsRouter'
 
 require('dotenv').config()
 const cors = require('cors')
 
 const app = express()
 require('./mongo')
-const usersRouter = require('./controllers/usersRouter')
-const alertsRouter = require('./controllers/alertsRouter')
 
 // const app = http.createServer((req, res) => {
 //   res.writeHead(200, { "Content-Type": "application/json" });
@@ -46,6 +46,10 @@ app.get('/prueba/:id', (req, res, next) => {
       next(err)
     })
 })
+
+app.use('/users', usersRouter)
+app.use('/alerts', alertsRouter)
+
 interface ErrorHandlers {
   [key: string]: (response: Response, error?: any) => void
 }
@@ -65,13 +69,11 @@ const error_handlers: ErrorHandlers = {
 }
 
 app.use((error: Error, _req: Request, response: Response) => {
+  console.log('error index.js', error.name)
   const handler = error_handlers[error.name] || error_handlers.defaultError
 
   handler(response, error)
 })
-
-app.use('/users', usersRouter)
-app.use('/alerts', alertsRouter)
 
 const PORT = process.env.PORT
 

@@ -1,4 +1,5 @@
-const router = require('express').Router()
+import express, { Router } from 'express'
+const router: Router = express.Router()
 const User = require('../models/UserModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
@@ -27,8 +28,7 @@ router.post('/signUp', async (req, res, next) => {
     const responseNewUser = await newUser.save()
     return res.json(responseNewUser)
   } catch (error) {
-    console.log('error user', error)
-    next(error)
+    return next(error)
   }
 })
 
@@ -61,8 +61,8 @@ router.post('/singIn', async (req, res, next) => {
       token
     })
   } catch (error) {
-    next(error)
+    return next(error)
   }
 })
 
-module.exports = router
+export default router

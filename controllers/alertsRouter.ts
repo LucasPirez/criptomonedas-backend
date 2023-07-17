@@ -1,14 +1,15 @@
+import express, { Router } from 'express'
+const router: Router = express.Router()
 const Alert = require('../models/alertsModel')
-const router = require('express').Router()
 const userExtractor = require('../middleware/userExtractor')
 router.get('/alerts')
 
-router.get('/', (req, res) => {
+router.get('/', () => {
   Alert.find({})
-    .then((data) => {
-      res.json(data[0].alerts)
+    .then((data: Object) => {
+      // res.json(data[0].alerts)
     })
-    .catch((e) => {
+    .catch((e: unknown) => {
       console.log(e)
     })
 })
@@ -31,7 +32,7 @@ router.post('/create', userExtractor, async (req, res, next) => {
       //   { $push: { alerts: { crypto, min, max, time } } },
       //   { new: true }
       // )
-      // return res.send(responseAdd)
+      return res.send('')
     } else {
       const newAlert = new Alert({
         userId,
@@ -100,4 +101,4 @@ router.get('/', (req, res, next) => {
     })
 })
 
-module.exports = router
+export default router
