@@ -83,14 +83,19 @@ router.delete('/delete', userExtractor, async (req, res, next) => {
   }
 })
 
-router.get('/', (req, res) => {
-  Alert.find({})
-    .then((data) => {
-      res.json(data[0].alerts)
-    })
-    .catch((e) => {
-      console.log(e)
-    })
+router.get('/', userExtractor, async (req, res, next) => {
+  const { userId } = req
+
+  try {
+    const userAlerts = await Alert.findOne({ userId })
+    if (userAlerts) {
+      return res.json(userAlerts)
+    } else {
+      return res.send('Ninguna alerta encontrada')
+    }
+  } catch (error) {
+    next(error)
+  }
 })
 
 module.exports = router
