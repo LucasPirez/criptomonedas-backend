@@ -1,5 +1,5 @@
-const { Schema, model } = require("mongoose");
-const uniqueValidator = require("mongoose-unique-validator");
+import { Schema, model } from "mongoose";
+import uniqueValidator from "mongoose-unique-validator";
 
 const UserSchema = new Schema({
   UserNameComplete: String,
@@ -10,7 +10,7 @@ const UserSchema = new Schema({
 });
 
 UserSchema.set("toJSON", {
-  transform: (document, returnedObject) => {
+  transform: (_document, returnedObject) => {
     returnedObject.id = returnedObject._id;
     delete returnedObject._id;
     delete returnedObject.__v;

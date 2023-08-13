@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose')
+import { Schema, model } from 'mongoose'
 
 const alertsObjectSchema = new Schema({
   crypto: { type: String, required: true, unique: true },
