@@ -1,6 +1,7 @@
-import express, { Request, Response } from 'express'
+import express, {Request, Response} from 'express'
 import usersRouter from './controllers/usersRouter'
 import alertsRouter from './controllers/alertsRouter'
+import {error_handlers} from './errors/error'
 
 require('dotenv').config()
 const cors = require('cors')
@@ -49,25 +50,6 @@ app.get('/prueba/:id', (req, res, next) => {
 
 app.use('/users', usersRouter)
 app.use('/alerts', alertsRouter)
-
-interface ErrorHandlers {
-  [key: string]: (response: Response, error?: any) => void
-}
-const error_handlers: ErrorHandlers = {
-  CastError: (response) =>
-    response.status(400).send({
-      error: 'malformed'
-    }),
-  JsonWebTokenError: (response) =>
-    response.status(401).json({ error: 'token missing or invalid' }),
-  ValidationError: (response, error) =>
-    response.status(409).json({
-      error: error.message
-    }),
-  defaultError: (response) =>
-    response.status(500).json({ error: 'default Error' })
-}
-
 app.use((error: Error, _req: Request, response: Response) => {
   console.log('error index.js', error.name)
   const handler = error_handlers[error.name] || error_handlers.defaultError
