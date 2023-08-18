@@ -1,7 +1,8 @@
 import express, { Router } from 'express'
+import Alert from '../models/alertsModel'
+import {userExtractor} from '../middleware/userExtractor'
+
 const router: Router = express.Router()
-const Alert = require('../models/alertsModel')
-const userExtractor = require('../middleware/userExtractor')
 router.get('/alerts')
 
 router.get('/', (_req,res) => {
@@ -15,9 +16,8 @@ router.get('/', (_req,res) => {
 })
 
 router.post('/create', userExtractor, async (req, res, next) => {
-  const { crypto, min, max, time } = req.body
+  const { crypto, min, max, time, userId } = req.body
   try {
-    const { userId } = req as any
 
     const userAlert = await Alert.findOne({ userId })
 
@@ -48,8 +48,7 @@ router.post('/create', userExtractor, async (req, res, next) => {
 })
 
 router.put('/edit', userExtractor, async (req, res, next) => {
-  const { crypto, min ,max,time } = req.body
-  const { userId } = req as any
+  const { crypto, min ,max,time, userId } = req.body
 
   try {
     const isExist = await Alert.findOne({ userId, 'alerts.crypto': crypto })
@@ -73,8 +72,8 @@ router.put('/edit', userExtractor, async (req, res, next) => {
 })
 
 router.delete('/delete', userExtractor, async (req, res, next) => {
-  const { crypto } = req.body
-  const { userId } = req as any
+  const { crypto, userId } = req.body
+
 
   try {
     const isExist = await Alert.findOne({ userId, 'alerts.crypto': crypto })
