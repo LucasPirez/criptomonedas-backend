@@ -1,7 +1,8 @@
-import { NextFunction,Request, Response } from 'express'
+import { NextFunction, Request, Response} from 'express'
 import jwt from 'jsonwebtoken'
 
-module.exports = (req:Request & {userId:string}, res:Response, next:NextFunction) => {
+
+export const userExtractor = (req:Request , res:Response, next:NextFunction)  => {
   const authorization = req.get('authorization')
 
   
@@ -17,7 +18,7 @@ module.exports = (req:Request & {userId:string}, res:Response, next:NextFunction
     }
     
     const { id:userId } = decodedToken
-    req.userId = userId
+    req.body.userId = userId 
 
 
   next()

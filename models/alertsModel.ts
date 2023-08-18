@@ -14,4 +14,4 @@ const alertsSchema = new Schema({
 
 const alertsModel = model('alert', alertsSchema)
 
-module.exports = alertsModel
+export default alertsModel
