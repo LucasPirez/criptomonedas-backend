@@ -1,11 +1,11 @@
 import express, { Router } from 'express'
 import Alert from '../models/alertsModel'
-import {userExtractor} from '../middleware/userExtractor'
+import { userExtractor } from '../middleware/userExtractor'
 
 const router: Router = express.Router()
 router.get('/alerts')
 
-router.get('/', (_req,res) => {
+router.get('/', (_req, res) => {
   Alert.find({})
     .then((data: Object) => {
       res.json(data)
@@ -18,7 +18,6 @@ router.get('/', (_req,res) => {
 router.post('/create', userExtractor, async (req, res, next) => {
   const { crypto, min, max, time, userId } = req.body
   try {
-
     const userAlert = await Alert.findOne({ userId })
 
     if (userAlert) {
@@ -44,11 +43,11 @@ router.post('/create', userExtractor, async (req, res, next) => {
   } catch (error) {
     next(error)
   }
-   return res.send('Unexpected error occurred');
+  return res.send('Unexpected error occurred')
 })
 
 router.put('/edit', userExtractor, async (req, res, next) => {
-  const { crypto, min ,max,time, userId } = req.body
+  const { crypto, min, max, time, userId } = req.body
 
   try {
     const isExist = await Alert.findOne({ userId, 'alerts.crypto': crypto })
@@ -67,13 +66,11 @@ router.put('/edit', userExtractor, async (req, res, next) => {
   } catch (error) {
     next(error)
   }
-   return res.send('Unexpected error occurred');
-  
+  return res.send('Unexpected error occurred')
 })
 
 router.delete('/delete', userExtractor, async (req, res, next) => {
   const { crypto, userId } = req.body
-
 
   try {
     const isExist = await Alert.findOne({ userId, 'alerts.crypto': crypto })
@@ -91,16 +88,15 @@ router.delete('/delete', userExtractor, async (req, res, next) => {
   } catch (error) {
     next(error)
   }
-   return res.send('Unexpected error occurred');
-
+  return res.send('Unexpected error occurred')
 })
 
 router.get('/', (_req, res, next) => {
   Alert.find({})
-    .then((data:Object) => {
+    .then((data: Object) => {
       res.json(data)
     })
-    .catch((error:Error) => {
+    .catch((error: Error) => {
       next(error)
     })
 })

@@ -1,9 +1,9 @@
 POST http://localhost:3001/alerts/create
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YjA1NGY0NzgxMGZhN2Y0YTFjOGQyZSIsInVzZXJuYW1lIjoianVsaW8yIiwiaWF0IjoxNjg5Mjc3Njk5LCJleHAiOjE2ODk4ODI0OTl9.30oesH3g8gsj-LKsQQ0YlOeISTcEs6TJDkSvfvogMLQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZDkzYjhjNTQyODhhNGQyZmFlMjU5NyIsInVzZXJuYW1lIjoianVsaW80IiwiaWF0IjoxNjkxOTU5ODg1LCJleHAiOjE2OTI1NjQ2ODV9.aQYumiajzuNSg-dbKBnUQqQiyrZEjcUuCLcdnTTxHK0
 
 {
-  "crypto": "dauueu",
+  "crypto": "bitcoin",
   "min": 7001,
   "max": 30,
   "time": "1998/04/23"

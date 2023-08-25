@@ -2,6 +2,6 @@ POST http://localhost:3001/users/singIn
 Content-Type: application/json
 
 {
-    "userAlias":"julio2",
-    "password":"343"
+    "userAlias":"julio4",
+    "password":"1111"
 }

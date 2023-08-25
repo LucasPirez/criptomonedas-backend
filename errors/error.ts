@@ -4,7 +4,7 @@ interface ErrorHandlers {
   [key: string]: (response: Response, error?: any) => void
 }
 
-export  const error_handlers: ErrorHandlers = {
+export const error_handlers: ErrorHandlers = {
   CastError: (response) =>
     response.status(400).send({
       error: 'malformed'
@@ -15,11 +15,6 @@ export  const error_handlers: ErrorHandlers = {
     response.status(409).json({
       error: error.message
     }),
-
   defaultError: (response) =>
     response.status(500).json({ error: 'default Error' })
 }
-
-
-
-

@@ -28,8 +28,9 @@ router.post('/signUp', async (req, res, next) => {
     const responseNewUser = await newUser.save()
     return res.json(responseNewUser)
   } catch (error) {
-    return next(error)
+    next(error)
   }
+  return res.send('Unexpected error occurred')
 })
 
 router.post('/singIn', async (req, res, next) => {
@@ -61,8 +62,9 @@ router.post('/singIn', async (req, res, next) => {
       token
     })
   } catch (error) {
-    return next(error)
+    next(error)
   }
+  return res.send('Unexpected error occurred')
 })
 
 export default router

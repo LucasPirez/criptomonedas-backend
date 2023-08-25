@@ -1,7 +1,8 @@
-import express, {Request, Response} from 'express'
+import express, { Request, Response } from 'express'
 import usersRouter from './controllers/usersRouter'
 import alertsRouter from './controllers/alertsRouter'
-import {error_handlers} from './errors/error'
+import coinGeckoRouter from './controllers/coingGeckoRouter'
+import { error_handlers } from './errors/error'
 
 require('dotenv').config()
 const cors = require('cors')
@@ -20,41 +21,45 @@ require('./mongo')
 app.use(cors())
 app.use(express.json())
 
-const User = require('./models/UserModel')
+// const User = require('./models/UserModel')
 
-app.get('/', (_, res, next) => {
-  User.find({})
-    .then((data: Object) => {
-      res.json(data)
-    })
-    .catch((error: Error) => {
-      next(error)
-    })
-})
+// app.get('/', (_, res, next) => {
+//   User.find({})
+//     .then((data: Object) => {
+//       res.json(data)
+//     })
+//     .catch((error: Error) => {
+//       next(error)
+//     })
+// })
 
-app.get('/prueba/:id', (req, res, next) => {
-  const id = req.params.id
+// app.get('/prueba/:id', (req, res, next) => {
+//   const id = req.params.id
 
-  User.findById(id)
-    .then((data: Object) => {
-      if (data) {
-        res.json(data)
-      } else {
-        res.status(404).end()
-      }
-    })
-    .catch((err: Error) => {
-      next(err)
-    })
-})
+//   User.findById(id)
+//     .then((data: Object) => {
+//       if (data) {
+//         res.json(data)
+//       } else {
+//         res.status(404).end()
+//       }
+//     })
+//     .catch((err: Error) => {
+//       next(err)
+//     })
+// })
 
 app.use('/users', usersRouter)
 app.use('/alerts', alertsRouter)
+app.use('/apiCoinGecko', coinGeckoRouter)
+
 app.use((error: Error, _req: Request, response: Response) => {
   console.log('error index.js', error.name)
-  const handler = error_handlers[error.name] || error_handlers.defaultError
+  if (error.name) {
+    const handler = error_handlers[error.name] || error_handlers.defaultError
 
-  handler(response, error)
+    handler(response, error)
+  }
 })
 
 const PORT = process.env.PORT
