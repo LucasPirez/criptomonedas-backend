@@ -2,8 +2,8 @@ POST http://localhost:3001/users/signUp
 Content-Type: application/json
 
 {
-     "UserNameComplete": "person",
-    "userAlias": "julio3",
-    "email": "julio3@hoce",
-    "password": "3435"
+     "UserNameComplete": "personnew",
+    "userAlias": "julio5",
+    "email": "julio5@hoce",
+    "password": "1111"
 }

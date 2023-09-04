@@ -1,12 +1,22 @@
-const Alert = require('../models/alertsModel')
-const router = require('express').Router()
-const userExtractor = require('../middleware/userExtractor')
+import express, { Router } from 'express'
+import Alert from '../models/alertsModel'
+import { userExtractor } from '../middleware/userExtractor'
+
+const router: Router = express.Router()
 router.get('/alerts')
 
-router.post('/create', userExtractor, async (req, res, next) => {
-  const { crypto, min, max, time } = req.body
-  const { userId } = req
+router.get('/', (_req, res) => {
+  Alert.find({})
+    .then((data: Object) => {
+      res.json(data)
+    })
+    .catch((e: unknown) => {
+      console.log(e)
+    })
+})
 
+router.post('/create', userExtractor, async (req, res, next) => {
+  const { crypto, min, max, time, userId } = req.body
   try {
     const userAlert = await Alert.findOne({ userId })
 
@@ -15,15 +25,12 @@ router.post('/create', userExtractor, async (req, res, next) => {
         userId,
         'alerts.crypto': crypto
       })
-
       if (isExist) return res.send('ya existe una alerta para esa crypto')
-
       const responseAdd = await Alert.findOneAndUpdate(
         { userId },
         { $push: { alerts: { crypto, min, max, time } } },
         { new: true }
       )
-
       return res.send(responseAdd)
     } else {
       const newAlert = new Alert({
@@ -36,11 +43,11 @@ router.post('/create', userExtractor, async (req, res, next) => {
   } catch (error) {
     next(error)
   }
+  return res.send('Unexpected error occurred')
 })
 
 router.put('/edit', userExtractor, async (req, res, next) => {
-  const { crypto } = req.body
-  const { userId } = req
+  const { crypto, min, max, time, userId } = req.body
 
   try {
     const isExist = await Alert.findOne({ userId, 'alerts.crypto': crypto })
@@ -59,11 +66,11 @@ router.put('/edit', userExtractor, async (req, res, next) => {
   } catch (error) {
     next(error)
   }
+  return res.send('Unexpected error occurred')
 })
 
 router.delete('/delete', userExtractor, async (req, res, next) => {
-  const { crypto } = req.body
-  const { userId } = req
+  const { crypto, userId } = req.body
 
   try {
     const isExist = await Alert.findOne({ userId, 'alerts.crypto': crypto })
@@ -81,21 +88,17 @@ router.delete('/delete', userExtractor, async (req, res, next) => {
   } catch (error) {
     next(error)
   }
+  return res.send('Unexpected error occurred')
 })
 
-router.get('/', userExtractor, async (req, res, next) => {
-  const { userId } = req
-
-  try {
-    const userAlerts = await Alert.findOne({ userId })
-    if (userAlerts) {
-      return res.json(userAlerts)
-    } else {
-      return res.send('Ninguna alerta encontrada')
-    }
-  } catch (error) {
-    next(error)
-  }
+router.get('/', (_req, res, next) => {
+  Alert.find({})
+    .then((data: Object) => {
+      res.json(data)
+    })
+    .catch((error: Error) => {
+      next(error)
+    })
 })
 
-module.exports = router
+export default router
