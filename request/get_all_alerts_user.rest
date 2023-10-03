@@ -1,5 +1,0 @@
-
-Get http://localhost:3001/alerts
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YjU5Nzk3YWM5NDY0ZjViMmIyZjY2NiIsInVzZXJuYW1lIjoianVsaW8zIiwiaWF0IjoxNjg5NjIyNDQ0LCJleHAiOjE2OTAyMjcyNDR9.7mSdb7GMXdYwHawj5NEhFSW82olN8mZYo5JzXWG6rJ8
-

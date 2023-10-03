@@ -1,7 +1,0 @@
-POST http://localhost:3001/users/singIn
-Content-Type: application/json
-
-{
-    "userAlias":"julio4",
-    "password":"1111"
-}
